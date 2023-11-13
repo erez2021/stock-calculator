@@ -12,12 +12,17 @@
   },
   "investment": "Investment amount",
   "profitTarget": "Profit target",
+  "stopLoss": "Stop loss",
   "leverage": "Leverage",
-  "commission": "Commission by percentages",
+  "commission": "Commission by %",
   "grossProfit": "Gross profit",
   "tax": "Tax",
   "totalCommission": "Total commission",
+  "grossLost": "Gross lost",
+  "netLost": "Net lost",
   "net profit": "Net profit",
   "calculate": "Calculate",
-  "clear": "clear"
+  "clear": "Clear",
+  "add": "Add",
+  "remove": "Remove"
 }

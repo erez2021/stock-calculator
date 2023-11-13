@@ -19,7 +19,7 @@
   display: flex;
   flex-direction: column;
   text-align: right;
-  width: 20%;
+  width: 16%;
 }
 
 .results {
@@ -44,6 +44,13 @@
 }
 .calc-button {
   margin-right: auto;
+}
+.max-margin-left {
+  margin-right: unset;
+  margin-left: auto;
+}
+.small-margin-left {
+  margin-left: 20px;
 }
 .neto {
   font-weight: 500;

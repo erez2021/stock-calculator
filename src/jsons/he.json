@@ -12,12 +12,17 @@
   },
   "investment": "סכום השקעה",
   "profitTarget": "יעד רווח",
+  "stopLoss": "עצירת הפסד",
   "leverage": "מינוף",
-  "commission": "עמלה באחוזים",
+  "commission": "%-עמלה ב",
   "grossProfit": "רווח ברוטו",
   "tax": "מס",
   "totalCommission": "עמלה כוללת",
+  "grossLost": "הפסד ברוטו",
+  "netLost": "הפסד נטו",
   "net profit": "רווח נטו",
   "calculate": "חשב",
-  "clear": "נקה"
+  "clear": "נקה",
+  "add": "הוסף",
+  "remove": "הסר"
 }

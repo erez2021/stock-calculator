@@ -78,6 +78,7 @@ function App() {
             id="currency"
             options={currencies}
             onchange={handleChange}
+            lang={selectedLanguage}
           />
         </div>
         <div className={dynamicInputClassName}>
@@ -87,6 +88,7 @@ function App() {
             id="language"
             options={languages}
             onchange={handleChange}
+            lang={selectedLanguage}
           />
         </div>
       </div>
