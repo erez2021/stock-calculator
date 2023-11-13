@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Input from "../styled/input";
 import Button from "../styled/button";
 import { leverages, percent } from "../../services/calculator.service";
@@ -12,8 +12,10 @@ const Calculator = (props) => {
   const [profit, setProfit] = useState(4);
   const [stopLoss, setStopLoss] = useState(2);
   const [amount, setAmount] = useState(0);
-  const [tax, setTax] = useState(0);
-  const [profitBeforeReduce, setProfitBeforeReduce] = useState(0);
+  const [profitTax, setProfitTax] = useState(0);
+  const [lostTax, setLostTax] = useState(0);
+  const [grossProfit, setGrossProfit] = useState(0);
+  const [grossLost, setGrossLost] = useState(0);
   const [totalCommission, setTotalCommission] = useState(0);
   const [netProfit, setNetProfit] = useState(0);
   const [netLost, setNetLost] = useState(0);
@@ -31,13 +33,6 @@ const Calculator = (props) => {
     );
     setAmountChanged(true);
   }, [props.selectedCurrency]);
-
-  useEffect(() => {
-    if (amountChanged) {
-      calculateTrade();
-      setAmountChanged(false); // Reset the flag
-    }
-  }, [amount, amountChanged]);
 
   const handleInput = (id, event) => {
     const inputValue = event.target.value;
@@ -78,15 +73,27 @@ const Calculator = (props) => {
     }
   };
 
-  const calculateTrade = () => {
+  const calculateTrade = useCallback(() => {
     const targetProfit = amount * ((leverage * profit) / 100 + 1) - amount;
-    setProfitBeforeReduce(targetProfit);
-    const tradeTax = targetProfit * 0.25;
-    setTax(tradeTax);
+    setGrossProfit(targetProfit);
+    const stopLossTarget = amount * ((leverage * stopLoss) / 100 + 1) - amount;
+    setGrossLost(stopLossTarget);
+    const lossTax = stopLossTarget * 0.25;
+    setLostTax(lossTax);
+    const profitTax = targetProfit * 0.25;
+    setProfitTax(profitTax);
     const TotalCommission = 2 * (commission / 100) * amount;
     setTotalCommission(TotalCommission);
-    setNetProfit(targetProfit - TotalCommission - tradeTax);
-  };
+    setNetProfit(targetProfit - TotalCommission - profitTax);
+    setNetLost(stopLossTarget + TotalCommission - lossTax);
+  }, [amount, commission, leverage, profit, stopLoss]);
+
+  useEffect(() => {
+    if (amountChanged) {
+      calculateTrade();
+      setAmountChanged(false);
+    }
+  }, [amount, amountChanged, calculateTrade]);
 
   const clearCalculator = () => {
     setCommision(0.1);
@@ -95,6 +102,7 @@ const Calculator = (props) => {
     setStopLoss(2);
     setAmount(0);
     setNetProfit(0);
+    setNetLost(0);
   };
 
   const clearInput = () => {
@@ -155,7 +163,7 @@ const Calculator = (props) => {
             id="stoploss"
             value={stopLoss}
             options={percent}
-            onchange={(e) => handleInput("stopLoss")}
+            onchange={(e) => handleInput("stoploss", e)}
             lang={props.language}
           />
         </div>
@@ -241,11 +249,11 @@ const Calculator = (props) => {
               {currencySign} :{t("totalCommission")}
             </div>
             <div className="red">
-              {checkIsFloat(tax)}
-              {currencySign} :{t("tax")}
+              {checkIsFloat(profitTax)}
+              {currencySign} :{t("profitTax")}
             </div>
             <div className="green">
-              {checkIsFloat(profitBeforeReduce)}
+              {checkIsFloat(grossProfit)}
               {currencySign} :{t("grossProfit")}
             </div>
           </div>
@@ -257,7 +265,7 @@ const Calculator = (props) => {
             }`}
           >
             <div className="red neto">
-              {checkIsFloat(netProfit)}
+              {checkIsFloat(netLost)}
               {currencySign} :{t("netLost")}
             </div>
             <div className="red">
@@ -265,11 +273,12 @@ const Calculator = (props) => {
               {currencySign} :{t("totalCommission")}
             </div>
             <div className="green">
-              {checkIsFloat(tax)}
-              {currencySign} :{t("tax")}
+              {checkIsFloat(lostTax)}
+              {currencySign} :{t("taxRefund")}
+              <span className="">?</span>
             </div>
             <div className="red">
-              {checkIsFloat(profitBeforeReduce)}
+              {checkIsFloat(grossLost)}
               {currencySign} :{t("grossLost")}
             </div>
           </div>

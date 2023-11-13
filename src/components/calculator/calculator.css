@@ -28,6 +28,8 @@
   text-align: right;
   display: flex;
   justify-content: space-around;
+  margin-bottom: 10px;
+  background-color: darkslategray;
 }
 .text-align-left {
   text-align: left;
