@@ -1,7 +1,9 @@
 import { useState, useEffect, useCallback } from "react";
+import { Tooltip } from "react-tooltip";
 import Input from "../styled/input";
 import Button from "../styled/button";
 import { leverages, percent } from "../../services/calculator.service";
+import question from "../../assets/images/question.png";
 import "./calculator.css";
 import { useTranslation } from "react-i18next";
 
@@ -235,16 +237,30 @@ const Calculator = (props) => {
         <div>
           <div
             className={`results ${
-              props.language === "en"
-                ? "row-reverse text-align-left en-direction"
-                : ""
+              props.language === "en" ? "text-align-left en-direction" : ""
             }`}
           >
             <div className="green neto">
               {checkIsFloat(netProfit)}
               {currencySign} :{t("net profit")}
             </div>
-            <div className="red">
+            <div className="red align-center">
+              <img
+                className="small-icon"
+                src={question}
+                alt=""
+                data-tooltip-id="my-tooltip"
+                data-tooltip-content={t("commissionInfo")}
+                data-tooltip-place="top"
+                id="clickable"
+              />
+              <Tooltip
+                id="my-tooltip"
+                anchorSelect="#clickable"
+                clickable
+                openOnClick="true"
+                data-tooltip-delay-hide="1000"
+              />
               {checkIsFloat(totalCommission)}
               {currencySign} :{t("totalCommission")}
             </div>
@@ -256,31 +272,46 @@ const Calculator = (props) => {
               {checkIsFloat(grossProfit)}
               {currencySign} :{t("grossProfit")}
             </div>
+            <div className="green">{t("profitScenario")}</div>
           </div>
           <div
             className={`results ${
-              props.language === "en"
-                ? "row-reverse text-align-left en-direction"
-                : ""
+              props.language === "en" ? "text-align-left en-direction" : ""
             }`}
           >
             <div className="red neto">
               {checkIsFloat(netLost)}
               {currencySign} :{t("netLost")}
             </div>
-            <div className="red">
+            <div className="red align-center">
               {checkIsFloat(totalCommission)}
               {currencySign} :{t("totalCommission")}
             </div>
-            <div className="green">
+            <div className="green align-center">
+              <img
+                className="small-icon"
+                src={question}
+                alt=""
+                data-tooltip-id="my-tooltip"
+                data-tooltip-content={t("refund")}
+                data-tooltip-place="top"
+                id="clickable"
+              />
+              <Tooltip
+                id="my-tooltip"
+                anchorSelect="#clickable"
+                clickable
+                openOnClick="true"
+                data-tooltip-delay-hide="1000"
+              />
               {checkIsFloat(lostTax)}
               {currencySign} :{t("taxRefund")}
-              <span className="">?</span>
             </div>
             <div className="red">
               {checkIsFloat(grossLost)}
               {currencySign} :{t("grossLost")}
             </div>
+            <div className="red">{t("lossScenario")}</div>
           </div>
         </div>
       ) : null}

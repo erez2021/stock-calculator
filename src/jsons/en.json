@@ -25,5 +25,9 @@
   "calculate": "Calculate",
   "clear": "Clear",
   "add": "Add",
-  "remove": "Remove"
+  "remove": "Remove",
+  "refund": "Deduct against another profit",
+  "commissionInfo": "Buy+sell commission",
+  "profitScenario": "Profit scenario",
+  "lossScenario": "Loss scenario"
 }

@@ -25,5 +25,9 @@
   "calculate": "חשב",
   "clear": "נקה",
   "add": "הוסף",
-  "remove": "הסר"
+  "remove": "הסר",
+  "refund": "יקוזז מול רווח מעסקה אחרת",
+  "commissionInfo": "עמלת קניה+מכירה",
+  "profitScenario": "תרחיש רווח",
+  "lossScenario": "תרחיש הפסד"
 }

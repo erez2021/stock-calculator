@@ -23,7 +23,7 @@
 }
 
 .results {
-  width: 40%;
+  width: 50%;
   margin: 0 auto;
   text-align: right;
   display: flex;
@@ -33,6 +33,14 @@
 }
 .text-align-left {
   text-align: left;
+}
+.small-icon {
+  width: 16px;
+  margin: 0 3px;
+}
+.align-center {
+  align-items: center;
+  display: flex;
 }
 .buttons-container {
   display: flex;
@@ -69,5 +77,8 @@
   .results {
     width: 60%;
     flex-direction: column-reverse;
+  }
+  .align-center {
+    display: unset;
   }
 }

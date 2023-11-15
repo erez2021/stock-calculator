@@ -65,6 +65,10 @@ label {
   img {
     width: 100% !important;
   }
+  .small-icon {
+    width: 16px !important;
+    margin: 0 3px;
+  }
   .full-width {
     display: flex;
     flex-direction: column;
