@@ -29,5 +29,6 @@
   "refund": "יקוזז מול רווח מעסקה אחרת",
   "commissionInfo": "עמלת קניה+מכירה",
   "profitScenario": "תרחיש רווח",
-  "lossScenario": "תרחיש הפסד"
+  "lossScenario": "תרחיש הפסד",
+  "buyPrice": "מחיר קניה"
 }

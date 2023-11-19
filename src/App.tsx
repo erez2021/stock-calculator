@@ -13,6 +13,7 @@ import { currencies } from "./services/util.service";
 import { languages } from "./services/util.service";
 
 import { useTranslation } from "react-i18next";
+import RadioButtons from "./components/radioButtons/radioButtons";
 
 function App() {
   const { t } = useTranslation();
@@ -24,7 +25,7 @@ function App() {
   const [rate, setRate] = useState(4);
   const [baseCurrency, setBaseCurrency] = useState("usd");
   const [selectedLanguage, setSelectedLanguage] = useState("he");
-
+  const [selectedOption, setSelectedOption] = useState("option1");
   // useEffect(() => {
   //   Axios.get(
   //     `https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/${baseCurrency}.json`
@@ -54,11 +55,14 @@ function App() {
     if (inputValue === "ils" || inputValue === "usd") {
       setSelectedCurrency(inputValue);
     } else {
-      console.log(inputValue);
-
       i18n.changeLanguage(inputValue);
       setSelectedLanguage(inputValue);
     }
+  };
+
+  const handleRadioButtonChange = (event: any) => {
+    console.log("123", event.target.value);
+    setSelectedOption(event.target.value);
   };
 
   const dynamicInputClassName = ` ${"input-container currency-input"} ${
@@ -92,11 +96,18 @@ function App() {
           />
         </div>
       </div>
+      <RadioButtons
+        key={selectedOption}
+        language={selectedLanguage}
+        handleRadioButtonChange={handleRadioButtonChange}
+        selectedOption={selectedOption}
+      />
       {selectedPage == "calculator" && (
         <div className="app-calculator">
           {calculatorInstances.map((instance, index) => (
             <Calculator
               key={instance}
+              selectedOption={selectedOption}
               calculatorIndex={index}
               selectedCurrency={selectedCurrency}
               language={selectedLanguage}

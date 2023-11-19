@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import { Tooltip } from "react-tooltip";
 import Input from "../styled/input";
 import Button from "../styled/button";
+import PercentCalculator from "../percent-calculator/percentCalculator";
 import { leverages, percent } from "../../services/calculator.service";
 import question from "../../assets/images/question.png";
 import "./calculator.css";
@@ -134,66 +135,75 @@ const Calculator = (props) => {
 
   return (
     <div className={dynamicContainerClassName}>
-      <div className={dynamicInputsClassName}>
-        <div className={dynamicInputClassName}>
-          <label htmlFor="commission">{t("commission")}</label>
-          <Input
-            type="number"
-            id="commission"
-            value={commission}
-            onkeypress={(e) => handleKeyPress("commission", e)}
-            onchange={(e) => handleInput("commission", e)}
-            maxlength="4"
-            lang={props.language}
-          />
+      {props.selectedOption == "option1" && (
+        <div className={dynamicInputsClassName}>
+          <div className={dynamicInputClassName}>
+            <label htmlFor="commission">{t("commission")}</label>
+            <Input
+              type="number"
+              id="commission"
+              value={commission}
+              onkeypress={(e) => handleKeyPress("commission", e)}
+              onchange={(e) => handleInput("commission", e)}
+              maxlength="4"
+              lang={props.language}
+            />
+          </div>
+          <div className={dynamicInputClassName}>
+            <label htmlFor="leverage">{t("leverage")}</label>
+            <Input
+              type="dropdown"
+              id="leverage"
+              value={leverage}
+              options={leverages}
+              onchange={(e) => handleInput("leverage", e)}
+              lang={props.language}
+            />
+          </div>
+          <div className={dynamicInputClassName}>
+            <label htmlFor="stoploss">{t("stopLoss")}</label>
+            <Input
+              type="dropdown"
+              id="stoploss"
+              value={stopLoss}
+              options={percent}
+              onchange={(e) => handleInput("stoploss", e)}
+              lang={props.language}
+            />
+          </div>
+          <div className={dynamicInputClassName}>
+            <label htmlFor="profit">{t("profitTarget")}</label>
+            <Input
+              type="dropdown"
+              id="profit"
+              value={profit}
+              options={percent}
+              onchange={(e) => handleInput("profit", e)}
+              lang={props.language}
+            />
+          </div>
+          <div className={dynamicInputClassName}>
+            <label htmlFor="amount">{t("investment")}</label>
+            <Input
+              type="number"
+              id="amount"
+              value={checkIsFloat(amount)}
+              onkeypress={(e) => handleKeyPress("amount", e)}
+              onchange={(e) => handleInput("amount", e)}
+              onfocus={clearInput}
+              maxlength="7"
+              lang={props.language}
+            />
+          </div>
         </div>
-        <div className={dynamicInputClassName}>
-          <label htmlFor="leverage">{t("leverage")}</label>
-          <Input
-            type="dropdown"
-            id="leverage"
-            value={leverage}
-            options={leverages}
-            onchange={(e) => handleInput("leverage", e)}
-            lang={props.language}
-          />
-        </div>
-        <div className={dynamicInputClassName}>
-          <label htmlFor="stoploss">{t("stopLoss")}</label>
-          <Input
-            type="dropdown"
-            id="stoploss"
-            value={stopLoss}
-            options={percent}
-            onchange={(e) => handleInput("stoploss", e)}
-            lang={props.language}
-          />
-        </div>
-        <div className={dynamicInputClassName}>
-          <label htmlFor="profit">{t("profitTarget")}</label>
-          <Input
-            type="dropdown"
-            id="profit"
-            value={profit}
-            options={percent}
-            onchange={(e) => handleInput("profit", e)}
-            lang={props.language}
-          />
-        </div>
-        <div className={dynamicInputClassName}>
-          <label htmlFor="amount">{t("investment")}</label>
-          <Input
-            type="number"
-            id="amount"
-            value={checkIsFloat(amount)}
-            onkeypress={(e) => handleKeyPress("amount", e)}
-            onchange={(e) => handleInput("amount", e)}
-            onfocus={clearInput}
-            maxlength="7"
-            lang={props.language}
-          />
-        </div>
-      </div>
+      )}
+      {props.selectedOption == "option2" && (
+        <PercentCalculator
+          language={props.language}
+          handleKeyPress={handleKeyPress}
+          handleInput={handleInput}
+        />
+      )}
       <div>
         <div
           className={`buttons-container ${

@@ -21,9 +21,6 @@
   text-align: right;
   width: 16%;
 }
-.flex-end {
-  justify-content: flex-end;
-}
 .results {
   width: 50%;
   margin: 0 auto;

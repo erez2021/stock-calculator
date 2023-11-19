@@ -13,6 +13,7 @@ const Input = (props) => {
     value,
     onfocus,
     lang,
+    checked,
   } = props;
   if (type === "dropdown") {
     return (
@@ -28,7 +29,7 @@ const Input = (props) => {
         ))}
       </StyledInput>
     );
-  } else {
+  } else if (type === "number") {
     return (
       <StyledInput
         onChange={onchange}
@@ -37,6 +38,16 @@ const Input = (props) => {
         value={value}
         onFocus={onfocus}
         lang={lang}
+      />
+    );
+  } else {
+    return (
+      <StyledInput
+        type="radio"
+        onChange={onchange}
+        value={value}
+        lang={lang}
+        defaultChecked={checked}
       />
     );
   }

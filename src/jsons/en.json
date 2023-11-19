@@ -29,5 +29,6 @@
   "refund": "Deduct against another profit",
   "commissionInfo": "Buy+sell commission",
   "profitScenario": "Profit scenario",
-  "lossScenario": "Loss scenario"
+  "lossScenario": "Loss scenario",
+  "buyPrice": "Buying price"
 }
