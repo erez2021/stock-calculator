@@ -15,6 +15,11 @@ const Calculator = (props) => {
   const [profit, setProfit] = useState(4);
   const [stopLoss, setStopLoss] = useState(2);
   const [amount, setAmount] = useState(0);
+  const [profitTarget, setProfitTarget] = useState(0);
+  const [buyPrice, setBuyPrice] = useState(0);
+  const [sharesNumber, setSharesNumber] = useState(20);
+  const [sellingPrice, setSellingPrice] = useState(55);
+  const [stopLossPrice, setStopLossPrice] = useState(48);
   const [profitTax, setProfitTax] = useState(0);
   const [lostTax, setLostTax] = useState(0);
   const [grossProfit, setGrossProfit] = useState(0);
@@ -55,6 +60,21 @@ const Calculator = (props) => {
       case "amount":
         setAmount(inputValue);
         break;
+      case "buyPrice":
+        setBuyPrice(inputValue);
+        break;
+      case "profitTarget":
+        setProfitTarget(inputValue);
+        break;
+      case "stopLossPrice":
+        setStopLossPrice(inputValue);
+        break;
+      case "sharesNumber":
+        setSharesNumber(inputValue);
+        break;
+      case "sellingPrice":
+        setSellingPrice(inputValue);
+        break;
       default:
         break;
     }
@@ -77,19 +97,39 @@ const Calculator = (props) => {
   };
 
   const calculateTrade = useCallback(() => {
-    const targetProfit = amount * ((leverage * profit) / 100 + 1) - amount;
-    setGrossProfit(targetProfit);
-    const stopLossTarget = amount * ((leverage * stopLoss) / 100 + 1) - amount;
-    setGrossLost(stopLossTarget);
-    const lossTax = stopLossTarget * 0.25;
-    setLostTax(lossTax);
-    const profitTax = targetProfit * 0.25;
-    setProfitTax(profitTax);
-    const TotalCommission = 2 * (commission / 100) * amount;
-    setTotalCommission(TotalCommission);
-    setNetProfit(targetProfit - TotalCommission - profitTax);
-    setNetLost(stopLossTarget + TotalCommission - lossTax);
-  }, [amount, commission, leverage, profit, stopLoss]);
+    if (props.selectedOption == "amount") {
+      const targetProfit = amount * ((leverage * profit) / 100 + 1) - amount;
+      setGrossProfit(targetProfit);
+      const stopLossTarget =
+        amount * ((leverage * stopLoss) / 100 + 1) - amount;
+      setGrossLost(stopLossTarget);
+      const lossTax = stopLossTarget * 0.25;
+      setLostTax(lossTax);
+      const profitTax = targetProfit * 0.25;
+      setProfitTax(profitTax);
+      const TotalCommission = 2 * (commission / 100) * amount;
+      setTotalCommission(TotalCommission);
+      setNetProfit(targetProfit - TotalCommission - profitTax);
+      setNetLost(stopLossTarget + TotalCommission - lossTax);
+    } else if (props.selectedOption == "price") {
+      console.log(
+        sharesNumber,
+        buyPrice,
+        sellingPrice,
+        stopLossPrice,
+        commission
+      );
+    }
+  }, [
+    amount,
+    commission,
+    leverage,
+    profit,
+    stopLoss,
+    buyPrice,
+    profitTarget,
+    stopLossPrice,
+  ]);
 
   useEffect(() => {
     if (amountChanged) {
@@ -97,6 +137,10 @@ const Calculator = (props) => {
       setAmountChanged(false);
     }
   }, [amount, amountChanged, calculateTrade]);
+
+  useEffect(() => {
+    clearCalculator();
+  }, [props.selectedOption]);
 
   const clearCalculator = () => {
     setCommision(0.1);
@@ -106,6 +150,10 @@ const Calculator = (props) => {
     setAmount(0);
     setNetProfit(0);
     setNetLost(0);
+    setBuyPrice(0);
+    setSharesNumber(20);
+    setSellingPrice(55);
+    setStopLossPrice(48);
   };
 
   const clearInput = () => {
@@ -135,7 +183,7 @@ const Calculator = (props) => {
 
   return (
     <div className={dynamicContainerClassName}>
-      {props.selectedOption == "option1" && (
+      {props.selectedOption == "amount" && (
         <div className={dynamicInputsClassName}>
           <div className={dynamicInputClassName}>
             <label htmlFor="commission">{t("commission")}</label>
@@ -197,11 +245,18 @@ const Calculator = (props) => {
           </div>
         </div>
       )}
-      {props.selectedOption == "option2" && (
+      {props.selectedOption === "price" && (
         <PercentCalculator
           language={props.language}
           handleKeyPress={handleKeyPress}
           handleInput={handleInput}
+          tradeData={{
+            sharesNumber,
+            buyPrice,
+            sellingPrice,
+            stopLossPrice,
+            commission,
+          }}
         />
       )}
       <div>
@@ -218,7 +273,10 @@ const Calculator = (props) => {
             <Button
               text={t("calculate")}
               onclick={calculateTrade}
-              disabled={amount < 100}
+              disabled={
+                amount < 100 &&
+                (!buyPrice || !sharesNumber || !sellingPrice || !stopLossPrice)
+              }
             />
           </div>
           <div
@@ -239,6 +297,7 @@ const Calculator = (props) => {
               onclick={props.handleAddCalculator}
               size="small"
               title={t("add")}
+              disabled={props.calculatorInstances.length === 4}
             />
           </div>
         </div>

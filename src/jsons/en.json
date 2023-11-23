@@ -30,5 +30,10 @@
   "commissionInfo": "Buy+sell commission",
   "profitScenario": "Profit scenario",
   "lossScenario": "Loss scenario",
-  "buyPrice": "Buying price"
+  "buyPrice": "Buying price",
+  "sellingPrice": "Selling price",
+  "stockPrice": "Stock price",
+  "stopLossPrice": "Stop loss price",
+  "investmentAmount": "investment amount",
+  "sharesNumber": "Number of Shares"
 }

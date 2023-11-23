@@ -30,5 +30,10 @@
   "commissionInfo": "עמלת קניה+מכירה",
   "profitScenario": "תרחיש רווח",
   "lossScenario": "תרחיש הפסד",
-  "buyPrice": "מחיר קניה"
+  "buyPrice": "מחיר קניה",
+  "sellingPrice": "מחיר מכירה",
+  "stockPrice": "מחיר מניה",
+  "stopLossPrice": "מחיר קטיעת הפסד",
+  "investmentAmount": "סכום השקעה",
+  "sharesNumber": "כמות מניות"
 }

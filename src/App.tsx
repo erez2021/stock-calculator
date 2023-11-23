@@ -25,7 +25,7 @@ function App() {
   const [rate, setRate] = useState(4);
   const [baseCurrency, setBaseCurrency] = useState("usd");
   const [selectedLanguage, setSelectedLanguage] = useState("he");
-  const [selectedOption, setSelectedOption] = useState("option1");
+  const [selectedOption, setSelectedOption] = useState("amount");
   // useEffect(() => {
   //   Axios.get(
   //     `https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/${baseCurrency}.json`
@@ -61,7 +61,7 @@ function App() {
   };
 
   const handleRadioButtonChange = (event: any) => {
-    console.log("123", event.target.value);
+    setCalculatorInstances([1]);
     setSelectedOption(event.target.value);
   };
 
@@ -112,6 +112,7 @@ function App() {
               selectedCurrency={selectedCurrency}
               language={selectedLanguage}
               rate={rate}
+              calculatorInstances={calculatorInstances}
               handleAddCalculator={handleAddCalculator}
               handleRemoveCalculator={(e: any) =>
                 handleRemoveCalculator(e, index)

@@ -1,13 +1,13 @@
 import Input from "../styled/input";
+import "./radioButtons.css";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 const RadioButtons = (props) => {
   const { language, selectedOption } = props;
-  console.log("selectedOption", selectedOption);
   const { t } = useTranslation();
 
-  const dynamicInputsClassName = ` ${"inputs-container flex-end"} ${
+  const dynamicInputsClassName = ` ${"inputs-container flex-end buttons-container"} ${
     language === "en" ? "row-reverse" : ""
   }`;
 
@@ -18,23 +18,27 @@ const RadioButtons = (props) => {
   return (
     <div className={dynamicInputsClassName}>
       <div className={dynamicInputClassName}>
-        <label htmlFor="percentTrade">{t("option1")}</label>
+        <label htmlFor="percentTrade" className="text-align">
+          {t("investmentAmount")}
+        </label>
         <Input
           type="radio"
           id="percentTrade"
-          value="option1"
-          checked={selectedOption == "option1"}
+          value="amount"
+          checked={selectedOption == "amount"}
           onchange={props.handleRadioButtonChange}
           lang={language}
         />
       </div>
       <div className={dynamicInputClassName}>
-        <label htmlFor="percentTrade">{t("option2")}</label>
+        <label htmlFor="percentTrade" className="text-align">
+          {t("stockPrice")}
+        </label>
         <Input
           type="radio"
           id="amountTrade"
-          value="option2"
-          checked={selectedOption == "option2"}
+          value="price"
+          checked={selectedOption == "price"}
           onchange={props.handleRadioButtonChange}
           lang={language}
         />
