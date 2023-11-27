@@ -36,9 +36,7 @@ const Calculator = (props) => {
         ? prevState * props.rate
         : prevState / props.rate
     );
-    setCurrencySign((prevState) =>
-      props.selectedCurrency === "ils" ? "₪" : "$"
-    );
+    setCurrencySign(props.selectedCurrency === "ils" ? "₪" : "$");
     setAmountChanged(true);
   }, [props.selectedCurrency]);
 

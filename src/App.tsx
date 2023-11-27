@@ -73,7 +73,7 @@ function App() {
     <div className="App">
       {/* <Header onSetPage={setPage} />
       {selectedPage == "about" && <About />} */}
-      <h2 style={{ color: "white" }}>{t("title")}</h2>
+      <h2>{t("title")}</h2>
       <div className="top-inputs">
         <div className={dynamicInputClassName}>
           <label htmlFor="currency">{t("currency")}</label>
