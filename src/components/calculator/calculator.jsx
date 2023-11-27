@@ -73,6 +73,7 @@ const Calculator = (props) => {
         setSharesNumber(inputValue);
         break;
       case "sellingPrice":
+        console.log("sellingPrice", inputValue);
         setSellingPrice(inputValue);
         break;
       default:
@@ -96,39 +97,58 @@ const Calculator = (props) => {
     }
   };
 
+  const calculateTradeByAmount = () => {
+    const targetProfit = amount * ((leverage * profit) / 100 + 1) - amount;
+    setGrossProfit(targetProfit);
+    const stopLossTarget = amount * ((leverage * stopLoss) / 100 + 1) - amount;
+    setGrossLost(stopLossTarget);
+    const lossTax = stopLossTarget * 0.25;
+    setLostTax(lossTax);
+    const profitTax = targetProfit * 0.25;
+    setProfitTax(profitTax);
+    const TotalCommission = 2 * (commission / 100) * amount;
+    setTotalCommission(TotalCommission);
+    setNetProfit(targetProfit - TotalCommission - profitTax);
+    setNetLost(stopLossTarget + TotalCommission - lossTax);
+  };
+
+  const calculateTradeByPrice = () => {
+    const investmentAmount = sharesNumber * buyPrice;
+    const targetProfit = sharesNumber * sellingPrice;
+    const grossTargetProfit = Math.abs(targetProfit - investmentAmount);
+    setGrossProfit(grossTargetProfit);
+    const profitTax = grossTargetProfit * 0.25;
+    setProfitTax(profitTax);
+    const stopLossTarget = sharesNumber * stopLossPrice;
+    const grossTargetLoss = Math.abs(stopLossTarget - investmentAmount);
+    setGrossLost(grossTargetLoss);
+    const lossTax = grossTargetLoss * 0.25;
+    setLostTax(lossTax);
+    const totalCommission = 2 * (commission / 100) * investmentAmount;
+    setTotalCommission(totalCommission);
+    setNetProfit(grossTargetProfit - totalCommission - profitTax);
+    setNetLost(grossTargetLoss + totalCommission - lossTax);
+  };
+
   const calculateTrade = useCallback(() => {
     if (props.selectedOption == "amount") {
-      const targetProfit = amount * ((leverage * profit) / 100 + 1) - amount;
-      setGrossProfit(targetProfit);
-      const stopLossTarget =
-        amount * ((leverage * stopLoss) / 100 + 1) - amount;
-      setGrossLost(stopLossTarget);
-      const lossTax = stopLossTarget * 0.25;
-      setLostTax(lossTax);
-      const profitTax = targetProfit * 0.25;
-      setProfitTax(profitTax);
-      const TotalCommission = 2 * (commission / 100) * amount;
-      setTotalCommission(TotalCommission);
-      setNetProfit(targetProfit - TotalCommission - profitTax);
-      setNetLost(stopLossTarget + TotalCommission - lossTax);
+      calculateTradeByAmount();
     } else if (props.selectedOption == "price") {
-      console.log(
-        sharesNumber,
-        buyPrice,
-        sellingPrice,
-        stopLossPrice,
-        commission
-      );
+      calculateTradeByPrice();
     }
   }, [
-    amount,
-    commission,
-    leverage,
-    profit,
-    stopLoss,
-    buyPrice,
-    profitTarget,
-    stopLossPrice,
+    // amount,
+    // commission,
+    // leverage,
+    // profit,
+    // stopLoss,
+    // buyPrice,
+    // profitTarget,
+    // stopLossPrice,
+    // sellingPrice,
+    calculateTradeByAmount,
+    calculateTradeByPrice,
+    props.selectedOption,
   ]);
 
   useEffect(() => {
@@ -183,7 +203,7 @@ const Calculator = (props) => {
 
   return (
     <div className={dynamicContainerClassName}>
-      {props.selectedOption == "amount" && (
+      {props.selectedOption === "amount" && (
         <div className={dynamicInputsClassName}>
           <div className={dynamicInputClassName}>
             <label htmlFor="commission">{t("commission")}</label>
@@ -275,7 +295,12 @@ const Calculator = (props) => {
               onclick={calculateTrade}
               disabled={
                 amount < 100 &&
-                (!buyPrice || !sharesNumber || !sellingPrice || !stopLossPrice)
+                (!buyPrice ||
+                  !sharesNumber ||
+                  !sellingPrice ||
+                  !stopLossPrice ||
+                  (buyPrice >= sellingPrice && buyPrice >= stopLossPrice) ||
+                  (buyPrice <= sellingPrice && buyPrice <= stopLossPrice))
               }
             />
           </div>
